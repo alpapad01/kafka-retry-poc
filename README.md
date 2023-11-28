@@ -1,0 +1,1 @@
+has received offset commits from consumers as well as transactional producers. Mixing both types of offset commits will generally result in surprises and should be avoided. (kafka.coordinator.group.GroupMetadataManager)

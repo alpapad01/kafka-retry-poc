@@ -1,0 +1,41 @@
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9200}
+    admin:
+      auto-create: true
+      fail-fast: true
+      #close-timeout: 2s
+      #operation-timeout: 2s
+    template:
+      observation-enabled: true
+#      transaction-id-prefix: tx-
+      default-topic: completed
+    producer:
+      bootstrap-servers: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9200}
+      retries: 99
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-Serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      transaction-id-prefix: tx-
+#      properties:
+#        "[enable.idempotence]": true
+#        "[max.in.flight.requests.per.connection]": 5
+#        "[transaction.timeout.ms]": 900000
+    consumer:
+      bootstrap-servers: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9200}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      max-poll-records: 1
+      isolation-level: READ_COMMITTED
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.eshare.kafka.handler.model
+    listener:
+      ack-mode: manual-immediate
+
+#logging.level.org.springframework.kafka.listener: OFF
+#logging.level.org.springframework.kafka.core: OFF
